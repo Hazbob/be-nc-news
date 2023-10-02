@@ -14,7 +14,7 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticle);
 
 app.get("*", invalidPathHandler);
-//general error handler
+
 app.use(handleCustomError);
 
 app.use(handlePsqlError);
