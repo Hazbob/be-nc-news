@@ -1,4 +1,4 @@
-const { getTopics } = require("./controllers/api.controller.js");
+const { getTopics, getEndpoints } = require("./controllers/api.controller.js");
 
 const { invalidPathHandler } = require("./controllers/error.controller.js");
 
@@ -6,6 +6,8 @@ const express = require("express");
 const app = express();
 
 app.get("/api/topics", getTopics);
+
+app.get("/api", getEndpoints);
 
 app.get("*", invalidPathHandler);
 //general error handler
