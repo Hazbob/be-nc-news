@@ -30,7 +30,6 @@ describe("/api/topics", () => {
   it("should respond with a status code of 200 and return an array", async () => {
     const response = await request(app).get("/api/topics").expect(200);
     const { body } = response;
-
     expect(Array.isArray(body.topics)).toBe(true);
   });
   it("should return an array of object which should have the properties 'slug' and 'description' with both types being string", async () => {
@@ -52,12 +51,14 @@ describe("/api", () => {
     const { endpoints } = response.body;
     expect(typeof endpoints).toBe("object");
   });
-  it("should return a list of endpoints, of the same length as the endpoints.json file imported at the top", () => {
+  it("should return a list of endpoints, of the same length as the endpoints.json file imported at the top", async () => {
+    const response = await request(app).get("/api/").expect(200);
+    const { endpoints } = response.body;
     expect(Object.keys(endpoints).length).toBe(
       Object.keys(endpointsTest).length
     );
   });
-  it.only("should return an object with keys, [description, queries, example response]", async () => {
+  it("should return an object with keys, [description, queries, example response]", async () => {
     const response = await request(app).get("/api/").expect(200);
     const { endpoints } = response.body;
     for (const endP of Object.keys(endpoints)) {
