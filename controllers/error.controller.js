@@ -1,6 +1,5 @@
-function invalidPathHandler(err, req, res, next) {
-  console.log("hello");
-  res.status(404).send("Path Does Not Exist");
+function invalidPathHandler(req, res, next) {
+  res.status(404).send({ message: "Path Does Not Exist" });
 }
 
 module.exports = {

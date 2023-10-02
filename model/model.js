@@ -1,9 +1,9 @@
 const db = require("../db/connection");
 
-function selectSnacks() {
+function selectTopics() {
   return db.query("SELECT * FROM topics;").then((data) => {
     return data;
   });
 }
 
-module.exports = { selectSnacks };
+module.exports = { selectTopics };

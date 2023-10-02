@@ -1,11 +1,9 @@
-const {
-  getTopics,
-  invalidPathHandler,
-} = require("./controllers/api.controller.js");
+const { getTopics } = require("./controllers/api.controller.js");
+
+const { invalidPathHandler } = require("./controllers/error.controller.js");
 
 const express = require("express");
 const app = express();
-app.use(express.json());
 
 app.get("/api/topics", getTopics);
 

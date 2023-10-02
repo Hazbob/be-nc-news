@@ -1,16 +1,12 @@
-const { selectSnacks } = require("../model/model");
-
-function invalidPathHandler(req, res, next) {
-  res.status(200).send({ message: "Path Does Not Exist" });
-}
+const { selectTopics } = require("../model/model");
 
 function getTopics(req, res, next) {
-  return selectSnacks().then((data) => {
-    res.status(200).send(data);
+  return selectTopics().then((data) => {
+    const topics = data.rows;
+    res.status(200).send({ topics });
   });
 }
 
 module.exports = {
   getTopics,
-  invalidPathHandler,
 };
