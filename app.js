@@ -1,4 +1,8 @@
-const { getTopics, getArticle } = require("./controllers/api.controller.js");
+const {
+  getTopics,
+  getArticle,
+  getAllArticles,
+} = require("./controllers/api.controller.js");
 
 const {
   invalidPathHandler,
@@ -9,9 +13,13 @@ const {
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticle);
+
+app.get("/api/articles", getAllArticles);
 
 app.get("*", invalidPathHandler);
 
