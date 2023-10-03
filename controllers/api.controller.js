@@ -1,4 +1,8 @@
-const { selectTopics, selectArticle } = require("../model/model");
+const {
+  selectTopics,
+  selectArticle,
+  selectAllArticles,
+} = require("../model/model");
 
 async function getTopics(req, res, next) {
   try {
@@ -20,7 +24,17 @@ async function getArticle(req, res, next) {
   }
 }
 
+async function getAllArticles(req, res, next) {
+  try {
+    const articles = await selectAllArticles();
+    res.status(200).send({ articles });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getTopics,
   getArticle,
+  getAllArticles,
 };

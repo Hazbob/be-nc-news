@@ -4,6 +4,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed.js");
 const testData = require("../db/data/test-data/index.js");
 const connection = require("../db/connection.js");
+require("jest-sorted");
 
 beforeEach(() => {
   return seed(testData);
@@ -76,5 +77,35 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/99adadadad909")
       .expect(400);
     expect(body.message).toBe("Bad Request");
+  });
+});
+
+describe("api/articles", () => {
+  it("should return with status code 200 and an array", async () => {
+    const { body } = await request(app).get("/api/articles").expect(200);
+    expect(Array.isArray(body.articles)).toBe(true);
+  });
+  it("should sort the arrays in descending order", async () => {
+    const { body } = await request(app).get("/api/articles").expect(200);
+
+    expect(body.articles).toBeSorted({
+      key: "created_at",
+      descending: true,
+    });
+  });
+  it("should return return an array of objects with the correct properties as well as check for the comment count", async () => {
+    const { body } = await request(app).get("/api/articles").expect(200);
+    body.articles.forEach((article) => {
+      expect(article).toMatchObject({
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: expect.any(Number),
+        topic: expect.any(String),
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+        article_img_url: expect.any(String),
+        comment_count: expect.any(String),
+      });
+    });
   });
 });
