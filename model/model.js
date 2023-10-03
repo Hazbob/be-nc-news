@@ -42,13 +42,6 @@ async function selectCommentsOfArticle(articleId) {
     [articleId]
   );
 
-  if (comments.rows.length === 0) {
-    errorMessage = `ID(${articleId}) does not match any article`;
-    return Promise.reject({
-      status: 404,
-      message: errorMessage,
-    });
-  }
   return comments.rows;
 }
 

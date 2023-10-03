@@ -111,15 +111,21 @@ describe("api/articles", () => {
 });
 
 describe("/api/articles/:article_id/comments", () => {
-  it("should return a status code of 200 and an array", async () => {
-    const response = await request(app)
-      .get("/api/articles/1/comments")
-      .expect(200);
+  it("should return an empty array if the article has no comments", async () => {
+    const { body } = await request(app).get("/api/articles/4/comments");
+
+    expect(body.comments).toEqual([]);
+  });
+  it("should return an error message if the article id does not exist", async () => {
+    const { body } = await request(app).get("/api/articles/12121211/comments");
+    console.log(body);
+    expect(body.message).toBe("ID(12121211) does not match any article");
   });
   it("should return an array of comment objects with the correct properties", async () => {
     const { body } = await request(app)
       .get("/api/articles/1/comments")
       .expect(200);
+    expect(body.comments.length).not.toBe(0);
     body.comments.forEach((comment) => {
       expect(comment).toMatchObject({
         comment_id: expect.any(Number),
