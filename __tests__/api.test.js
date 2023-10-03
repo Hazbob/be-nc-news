@@ -93,4 +93,8 @@ describe("api/articles", () => {
       descending: true,
     });
   });
+  it("should throw an error on mis spelling the input", async () => {
+    const response = await request(app).get("/api/articje").expect(404);
+    expect(response.body.message).toBe("Path Does Not Exist");
+  });
 });
