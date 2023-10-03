@@ -3,16 +3,16 @@ function invalidPathHandler(req, res, next) {
 }
 
 function handleCustomError(err, req, res, next) {
-  if (err.status) {
+  if (err.status === 404) {
     const { message } = err;
-    res.status(404).send({ message });
+    return res.status(404).send({ message });
   }
   next(err);
 }
 
 function handlePsqlError(err, req, res, next) {
   if (err.code === "22P02") {
-    res.status(400).send({ message: "Bad Request" });
+    return res.status(400).send({ message: "Bad Request" });
   }
   next(err);
 }

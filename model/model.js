@@ -32,4 +32,29 @@ async function selectAllArticles() {
   return articles.rows;
 }
 
-module.exports = { selectTopics, selectArticle, selectAllArticles };
+async function selectCommentsOfArticle(articleId) {
+  const comments = await db.query(
+    `
+  SELECT * FROM comments
+  WHERE article_id = $1
+  ORDER BY created_at DESC;
+  `,
+    [articleId]
+  );
+
+  if (comments.rows.length === 0) {
+    errorMessage = `ID(${articleId}) does not match any article`;
+    return Promise.reject({
+      status: 404,
+      message: errorMessage,
+    });
+  }
+  return comments.rows;
+}
+
+module.exports = {
+  selectTopics,
+  selectArticle,
+  selectAllArticles,
+  selectCommentsOfArticle,
+};

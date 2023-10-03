@@ -42,5 +42,27 @@
         }
       ]
     }
+  },
+  "/api/articles/:article_id/comments": {
+    "description": "serves all comments belonging to a specific article id, sorted from most recent comment first",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "body": "I am 100% sure that we're not completely sure.",
+          "votes": 1,
+          "author": "butter_bridge",
+          "article_id": 5,
+          "created_at": 1606176480000
+        },
+        {
+          "body": "This is a bad article name",
+          "votes": 1,
+          "author": "butter_bridge",
+          "article_id": 6,
+          "created_at": 1602433380000
+        }
+      ]
+    }
   }
 }
