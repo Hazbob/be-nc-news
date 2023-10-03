@@ -13,8 +13,6 @@ const {
 const express = require("express");
 const app = express();
 
-app.use(express.json());
-
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticle);
@@ -26,5 +24,10 @@ app.get("*", invalidPathHandler);
 app.use(handleCustomError);
 
 app.use(handlePsqlError);
+
+app.use((err, req, res) => {
+  res.status(500).send(err.stack);
+  console.log(err);
+});
 
 module.exports = app;

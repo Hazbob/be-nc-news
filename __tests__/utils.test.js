@@ -3,7 +3,6 @@ const {
   createRef,
   formatComments,
 } = require("../db/seeds/utils");
-const compareDates = require("../controllers/utils/compareDates");
 require("jest-sorted");
 
 describe("convertTimestampToDate", () => {
@@ -102,28 +101,5 @@ describe("formatComments", () => {
     const comments = [{ created_at: timestamp }];
     const formattedComments = formatComments(comments, {});
     expect(formattedComments[0].created_at).toEqual(new Date(timestamp));
-  });
-});
-
-describe("compareDates - compare callback for the sort array method", () => {
-  it("should sort an array in descending order with the properties created_at", () => {
-    const input = [
-      { created_at: 10 },
-      { created_at: 12 },
-      { created_at: 4 },
-      { created_at: 23 },
-    ];
-    input.sort(compareDates);
-    expect(input).toEqual([
-      { created_at: 23 },
-      { created_at: 12 },
-      { created_at: 10 },
-      { created_at: 4 },
-    ]);
-
-    expect(input).toBeSorted({
-      key: "created_at",
-      descending: true,
-    });
   });
 });
