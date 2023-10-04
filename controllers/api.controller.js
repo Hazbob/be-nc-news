@@ -5,6 +5,7 @@ const {
   selectCommentsOfArticle,
   insertCommentOnArticle,
   updateArticle,
+  deleteComment,
 } = require("../model/model");
 
 async function getTopics(req, res, next) {
@@ -65,12 +66,21 @@ async function postCommentToArticle(req, res, next) {
   }
 }
 
-async function fetchUpdatedArticle(req, res, next) {
+async function getUpdatedArticle(req, res, next) {
   try {
     const { article_id } = req.params;
     const { inc_votes } = req.body;
     const article = await updateArticle(inc_votes, article_id);
     res.status(200).send(article);
+  } catch (err) {
+    next(err);
+  }
+}
+async function getDeleteComment(req, res, next) {
+  try {
+    const { comment_id } = req.params;
+    const comment = await deleteComment(comment_id);
+    res.status(204).send(comment);
   } catch (err) {
     next(err);
   }
@@ -81,5 +91,6 @@ module.exports = {
   getAllArticles,
   getCommentsOfArticle,
   postCommentToArticle,
-  fetchUpdatedArticle,
+  getUpdatedArticle,
+  getDeleteComment,
 };

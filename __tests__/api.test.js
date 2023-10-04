@@ -159,7 +159,6 @@ describe("/api/articles/:article_id/comments", () => {
     expect(body.message).toBe("Bad Request");
   });
 });
-
 describe("POST to /api/articles/:article_id/comments", () => {
   it("should respond with status 201 when posted with the correct properties", async () => {
     const input = { username: "lurker", body: "not a comment" };
@@ -314,5 +313,29 @@ describe("PATCH to /api/articles/:article_id", () => {
       .send(input)
       .expect(400);
     expect(body.message).toBe("Bad Request");
+  });
+});
+
+describe("DELETE to /api/comments/:comment_id", () => {
+  it("should delete a given comment by the comment id, respond with status 204 and no content", async () => {
+    const { body } = await request(app).delete("/api/comments/1").expect(204);
+    expect(body).toEqual({});
+  });
+  it("should return an error if the comment id is invalid", async () => {
+    const { body } = await request(app)
+      .delete("/api/comments/1121312313")
+      .expect(404);
+    expect(body.message).toBe("comment does not exist");
+  });
+  it("should return an error if the comment id is of the wrong type", async () => {
+    const { body } = await request(app)
+      .delete("/api/comments/hello")
+      .expect(400);
+    expect(body.message).toBe("Bad Request");
+  });
+  it("should delete that comment belonging to the id and it should no longer be in the database", async () => {
+    const deletion = await request(app).delete("/api/comments/1"); //should delete the comments with the comment id of 1
+    const { body } = await request(app).get("/api/articles/9/comments"); //this article has a comment with comment id of 1
+    expect(body.comments.length).toBe(1); //length of this is 2 originally
   });
 });
