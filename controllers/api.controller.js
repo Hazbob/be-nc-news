@@ -2,6 +2,7 @@ const {
   selectTopics,
   selectArticle,
   selectAllArticles,
+  selectCommentsOfArticle,
 } = require("../model/model");
 
 async function getTopics(req, res, next) {
@@ -33,8 +34,25 @@ async function getAllArticles(req, res, next) {
   }
 }
 
+async function getCommentsOfArticle(req, res, next) {
+  const { article_id } = req.params;
+  try {
+    const promises = await Promise.all([
+      selectArticle(article_id),
+      selectCommentsOfArticle(article_id),
+    ]);
+
+    const comments = await selectCommentsOfArticle(article_id);
+
+    res.status(200).send({ comments });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getTopics,
   getArticle,
   getAllArticles,
+  getCommentsOfArticle,
 };

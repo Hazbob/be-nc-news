@@ -2,6 +2,7 @@ const {
   getTopics,
   getArticle,
   getAllArticles,
+  getCommentsOfArticle,
 } = require("./controllers/api.controller.js");
 
 const {
@@ -19,15 +20,17 @@ app.get("/api/articles/:article_id", getArticle);
 
 app.get("/api/articles", getAllArticles);
 
+app.get("/api/articles/:article_id/comments", getCommentsOfArticle);
+
 app.get("*", invalidPathHandler);
 
 app.use(handleCustomError);
 
 app.use(handlePsqlError);
 
-app.use((err, req, res) => {
-  res.status(500).send(err.stack);
-  console.log(err);
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Something broke!");
 });
 
 module.exports = app;

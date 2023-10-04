@@ -109,3 +109,53 @@ describe("api/articles", () => {
     });
   });
 });
+
+describe("/api/articles/:article_id/comments", () => {
+  it("should return an empty array if the article has no comments", async () => {
+    const { body } = await request(app).get("/api/articles/4/comments");
+
+    expect(body.comments).toEqual([]);
+  });
+  it("should return an error message if the article id does not exist", async () => {
+    const { body } = await request(app).get("/api/articles/12121211/comments");
+    console.log(body);
+    expect(body.message).toBe("ID(12121211) does not match any article");
+  });
+  it("should return an array of comment objects with the correct properties", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/1/comments")
+      .expect(200);
+    expect(body.comments.length).not.toBe(0);
+    body.comments.forEach((comment) => {
+      expect(comment).toMatchObject({
+        comment_id: expect.any(Number),
+        body: expect.any(String),
+        article_id: expect.any(Number),
+        author: expect.any(String),
+        votes: expect.any(Number),
+        created_at: expect.any(String),
+      });
+    });
+  });
+  it("should return an array of comments sorted by most recent first", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/1/comments")
+      .expect(200);
+    expect(body.comments).toBeSorted({
+      key: "created_at",
+      descending: true,
+    });
+  });
+  it("should return an error if an invalid id is input + status code 404", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/112131231/comments")
+      .expect(404);
+    expect(body.message).toBe("ID(112131231) does not match any article");
+  });
+  it("should return an error a non numeric input causing an error in the db query", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/1121adadad31231/comments")
+      .expect(400);
+    expect(body.message).toBe("Bad Request");
+  });
+});

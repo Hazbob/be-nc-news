@@ -32,4 +32,22 @@ async function selectAllArticles() {
   return articles.rows;
 }
 
-module.exports = { selectTopics, selectArticle, selectAllArticles };
+async function selectCommentsOfArticle(articleId) {
+  const comments = await db.query(
+    `
+  SELECT * FROM comments
+  WHERE article_id = $1
+  ORDER BY created_at DESC;
+  `,
+    [articleId]
+  );
+
+  return comments.rows;
+}
+
+module.exports = {
+  selectTopics,
+  selectArticle,
+  selectAllArticles,
+  selectCommentsOfArticle,
+};
