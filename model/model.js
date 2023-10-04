@@ -11,7 +11,7 @@ async function selectArticle(articleId) {
     [articleId]
   );
   if (articleData.rows.length === 0 || !articleData.rows) {
-    errorMessage = `ID(${articleId}) does not match any article`;
+    let errorMessage = `ID(${articleId}) does not match any article`;
     return Promise.reject({
       status: 404,
       message: errorMessage,
@@ -45,9 +45,25 @@ async function selectCommentsOfArticle(articleId) {
   return comments.rows;
 }
 
+async function insertCommentOnArticle(articleId, author, body) {
+  const metaData = [articleId, author, body];
+
+  const query = await db.query(
+    `
+  INSERT INTO comments(article_id, author, body)
+  VALUES
+    ($1, $2, $3)
+    RETURNING *;
+  `,
+    metaData
+  );
+  return query.rows;
+}
+
 module.exports = {
   selectTopics,
   selectArticle,
   selectAllArticles,
   selectCommentsOfArticle,
+  insertCommentOnArticle,
 };

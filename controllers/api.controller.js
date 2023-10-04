@@ -3,6 +3,7 @@ const {
   selectArticle,
   selectAllArticles,
   selectCommentsOfArticle,
+  insertCommentOnArticle,
 } = require("../model/model");
 
 async function getTopics(req, res, next) {
@@ -50,9 +51,23 @@ async function getCommentsOfArticle(req, res, next) {
   }
 }
 
+async function postCommentToArticle(req, res, next) {
+  try {
+    const { username, body } = req.body;
+    const { article_id } = req.params;
+
+    const comment = await insertCommentOnArticle(article_id, username, body);
+
+    res.status(201).send(comment);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getTopics,
   getArticle,
   getAllArticles,
   getCommentsOfArticle,
+  postCommentToArticle,
 };

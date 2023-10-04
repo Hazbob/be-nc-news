@@ -159,3 +159,53 @@ describe("/api/articles/:article_id/comments", () => {
     expect(body.message).toBe("Bad Request");
   });
 });
+
+describe("POST to /api/articles/:article_id/comments", () => {
+  it("should respond with status 201 when posted with the correct properties", async () => {
+    const input = { username: "lurker", body: "not a comment" };
+    const response = await request(app)
+      .post("/api/articles/2/comments")
+      .send(input);
+    expect(input).toMatchObject({
+      username: expect.any(String),
+      body: expect.any(String),
+    });
+  });
+  it("should return the comment that was posted", async () => {
+    const input = { username: "lurker", body: "not a comment" };
+    const { body } = await request(app)
+      .post("/api/articles/2/comments")
+      .send(input);
+    console.log(body);
+    expect(body.length).toBe(1);
+    body.forEach((comment) => {
+      expect(comment).toMatchObject({
+        comment_id: expect.any(Number),
+        body: expect.any(String),
+        article_id: expect.any(Number),
+        author: expect.any(String),
+        votes: expect.any(Number),
+        created_at: expect.any(String),
+      });
+    });
+  });
+  it("should return an error if the property keys of the input are incorrect", async () => {
+    const input = { userivespeltthiswrong: "lurker", body: "not a comment" };
+    const { body } = await request(app)
+      .post("/api/articles/2/comments")
+      .send(input);
+
+    expect(body.message).toBe("Bad Request");
+  });
+  it("should return an error if the user doesnt exist in the users table", async () => {
+    const input = {
+      username: "nonexistent user",
+      body: "not a comment",
+    };
+    const { body } = await request(app)
+      .post("/api/articles/2/comments")
+      .send(input);
+
+    expect(body.message).toBe("User Not Found");
+  });
+});
