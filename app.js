@@ -4,6 +4,7 @@ const {
   getAllArticles,
   getCommentsOfArticle,
   postCommentToArticle,
+  fetchUpdatedArticle,
 } = require("./controllers/api.controller.js");
 
 const {
@@ -25,6 +26,9 @@ app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id/comments", getCommentsOfArticle);
 app.post("/api/articles/:article_id/comments", postCommentToArticle);
 
+app.patch("/api/articles/:article_id", fetchUpdatedArticle);
+
+//error handlers
 app.get("*", invalidPathHandler);
 
 app.use(handleCustomError);

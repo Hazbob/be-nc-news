@@ -229,3 +229,90 @@ describe("POST to /api/articles/:article_id/comments", () => {
     expect(body.message).toBe("Bad Request");
   });
 });
+
+describe("PATCH to /api/articles/:article_id", () => {
+  it("should respond with status code 200 for a successful request and respond with the updated article", async () => {
+    const input = { inc_votes: 1 };
+    const articleBefore = {
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+      created_at: "2020-07-09T20:11:00.000Z",
+      votes: 100,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+    }; // this is the article that we will be checking in this test
+    const { body } = await request(app)
+      .patch("/api/articles/1")
+      .send(input)
+      .expect(200);
+    expect(body).not.toEqual(articleBefore);
+    expect(body).toEqual({
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+      created_at: "2020-07-09T20:11:00.000Z",
+      votes: 101,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+    });
+  });
+  it("should return with an updated article for a number greater that 1", async () => {
+    const input = { inc_votes: 10 };
+    const articleBefore = {
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+      created_at: "2020-07-09T20:11:00.000Z",
+      votes: 100,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+    }; // this is the article that we will be checking in this test
+    const { body } = await request(app)
+      .patch("/api/articles/1")
+      .send(input)
+      .expect(200);
+    expect(body).not.toEqual(articleBefore);
+    expect(body).toEqual({
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+      created_at: "2020-07-09T20:11:00.000Z",
+      votes: 110,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+    });
+  });
+  it("should return an error if the article id doesnt exist", async () => {
+    const input = { inc_votes: 10 };
+    const { body } = await request(app)
+      .patch("/api/articles/29020202")
+      .send(input)
+      .expect(404);
+    expect(body.message).toBe("Article ID does not exist");
+  });
+  it("should return an error if the input object has the wrong properties", async () => {
+    const input = { inc_votes2: 2 };
+    const { body } = await request(app)
+      .patch("/api/articles/29020202")
+      .send(input)
+      .expect(400);
+    expect(body.message).toBe("Bad Request");
+  });
+  it("should return an error if the input is of the wrong format", async () => {
+    const input = { inc_votes2: "hello" };
+    const { body } = await request(app)
+      .patch("/api/articles/2")
+      .send(input)
+      .expect(400);
+    expect(body.message).toBe("Bad Request");
+  });
+});
