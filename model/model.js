@@ -57,7 +57,7 @@ async function insertCommentOnArticle(articleId, author, body) {
   `,
     metaData
   );
-  return query.rows;
+  return query.rows[0];
 }
 
 module.exports = {

@@ -15,6 +15,9 @@ function handlePsqlError(err, req, res, next) {
     return res.status(400).send({ message: "Bad Request" });
   }
   if (err.code === "23503" && err.table === "comments") {
+    if (err.constraint === "comments_article_id_fkey") {
+      return res.status(404).send({ message: "Article Id Is Invalid" });
+    }
     return res.status(404).send({ message: "User Not Found" });
   }
   next(err);
