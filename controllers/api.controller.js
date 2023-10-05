@@ -4,6 +4,7 @@ const {
   selectAllArticles,
   selectCommentsOfArticle,
   insertCommentOnArticle,
+  selectUsers,
 } = require("../model/model");
 
 async function getTopics(req, res, next) {
@@ -64,10 +65,16 @@ async function postCommentToArticle(req, res, next) {
   }
 }
 
+async function getUsers(req, res, next) {
+  const users = await selectUsers();
+  res.status(200).send({ users });
+}
+
 module.exports = {
   getTopics,
   getArticle,
   getAllArticles,
   getCommentsOfArticle,
   postCommentToArticle,
+  getUsers,
 };

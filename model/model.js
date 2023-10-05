@@ -60,10 +60,18 @@ async function insertCommentOnArticle(articleId, author, body) {
   return query.rows[0];
 }
 
+async function selectUsers() {
+  const users = await db.query(`
+  SELECT * FROM users;
+  `);
+  return users.rows;
+}
+
 module.exports = {
   selectTopics,
   selectArticle,
   selectAllArticles,
   selectCommentsOfArticle,
   insertCommentOnArticle,
+  selectUsers,
 };
