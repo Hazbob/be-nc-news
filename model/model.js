@@ -1,4 +1,3 @@
-const { val } = require("cheerio/lib/api/attributes");
 const db = require("../db/connection");
 
 async function selectTopics() {
