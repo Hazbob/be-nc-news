@@ -339,3 +339,5 @@ describe("DELETE to /api/comments/:comment_id", () => {
     expect(body.comments.length).toBe(1); //length of this is 2 originally
   });
 });
+
+describe("GET /api/users", () => {});
