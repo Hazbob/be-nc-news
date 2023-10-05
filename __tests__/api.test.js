@@ -352,8 +352,14 @@ describe("GET /api/articles with topic query", () => {
 
   it("should return an error if an invalid topic was input", async () => {
     const { body } = await request(app)
-      .get("/api/articles?topic=notatopic")
+      .get("/api/articles?topic=notaasdawedawdasdawdadtopic")
       .expect(400);
     expect(body.message).toBe("Invalid Topic");
+  });
+  it("should return a 200 if the topic exists but there is no article and return an empty array in the body", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?topic=testtopicwithnoarticle")
+      .expect(200);
+    expect(body.articles).toEqual([]);
   });
 });

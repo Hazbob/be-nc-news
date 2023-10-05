@@ -24,6 +24,7 @@ async function selectArticle(articleId) {
 async function selectAllArticles(topic) {
   const validTopics = {
     mitch: "mitch",
+    testtopicwithnoarticle: "testtopicwithnoarticle",
   };
 
   let query = `
