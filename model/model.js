@@ -1,3 +1,4 @@
+const { val } = require("cheerio/lib/api/attributes");
 const db = require("../db/connection");
 
 async function selectTopics() {
@@ -20,15 +21,26 @@ async function selectArticle(articleId) {
   return articleData.rows;
 }
 
-async function selectAllArticles() {
-  const articles = await db.query(`
-    SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments) as comment_count 
-    FROM articles
-    LEFT JOIN comments ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id
-    ORDER BY articles.created_at DESC;
+async function selectAllArticles(topic) {
+  const validTopics = {
+    mitch: "mitch",
+  };
 
-    `);
+  let query = `
+  SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments) as comment_count 
+  FROM articles
+  LEFT JOIN comments ON articles.article_id = comments.article_id`;
+
+  if (topic) {
+    if (!(topic in validTopics)) {
+      return Promise.reject({ status: 400, message: "Invalid Topic" });
+    }
+    query += ` WHERE articles.topic = '${validTopics[topic]}'`;
+  }
+
+  query += ` GROUP BY articles.article_id
+  ORDER BY articles.created_at DESC;`;
+  const articles = await db.query(query);
   return articles.rows;
 }
 
@@ -59,7 +71,6 @@ async function insertCommentOnArticle(articleId, author, body) {
   );
   return query.rows[0];
 }
-
 
 async function selectUsers() {
   const users = await db.query(`
@@ -100,7 +111,6 @@ async function deleteComment(...commentId) {
     return Promise.reject({ status: 404, message: "comment does not exist" });
   }
   return comment;
-
 }
 
 module.exports = {
@@ -112,5 +122,4 @@ module.exports = {
   selectUsers,
   updateArticle,
   deleteComment,
-
 };
