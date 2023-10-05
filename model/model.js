@@ -60,10 +60,47 @@ async function insertCommentOnArticle(articleId, author, body) {
   return query.rows[0];
 }
 
+async function updateArticle(votesNum, articleId) {
+  if (!votesNum || !articleId) {
+    return Promise.reject({ status: 400, message: "Bad Request" });
+  }
+
+  const article = await db.query(
+    `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`,
+    [votesNum, articleId]
+  );
+
+  if (article.rows.length === 0) {
+    return Promise.reject({
+      status: 404,
+      message: "Article ID does not exist",
+    });
+  }
+  return article.rows[0];
+}
+
+async function deleteComment(...commentId) {
+  const comment = await db.query(
+    `
+  DELETE FROM comments
+  WHERE comment_id = $1
+  RETURNING *;
+  `,
+    commentId
+  );
+
+  if (comment.rows.length === 0) {
+    return Promise.reject({ status: 404, message: "comment does not exist" });
+  }
+  return comment;
+}
+
 module.exports = {
   selectTopics,
   selectArticle,
   selectAllArticles,
   selectCommentsOfArticle,
   insertCommentOnArticle,
+  updateArticle,
+  deleteComment,
 };

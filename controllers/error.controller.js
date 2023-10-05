@@ -7,6 +7,10 @@ function handleCustomError(err, req, res, next) {
     const { message } = err;
     return res.status(404).send({ message });
   }
+  if (err.status == 400) {
+    const { message } = err;
+    return res.status(400).send({ message });
+  }
   next(err);
 }
 
