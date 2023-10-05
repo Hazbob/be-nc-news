@@ -8,7 +8,10 @@ async function selectTopics() {
 
 async function selectArticle(articleId) {
   const articleData = await db.query(
-    "SELECT * FROM articles  WHERE article_id=$1;",
+    `SELECT articles.*, COUNT(comments) as comment_count FROM articles
+    LEFT JOIN comments on articles.article_id = comments.article_id
+    WHERE articles.article_id=$1
+    GROUP BY articles.article_id;`,
     [articleId]
   );
   if (articleData.rows.length === 0 || !articleData.rows) {

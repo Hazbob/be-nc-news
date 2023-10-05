@@ -363,3 +363,14 @@ describe("GET /api/articles with topic query", () => {
     expect(body.articles).toEqual([]);
   });
 });
+
+describe("GET article by id should have a comment count property too", () => {
+  it("should return an article object and that object should contain a comment count property", async () => {
+    const { body } = await request(app).get("/api/articles/1").expect(200);
+    expect(body.article[0]).toHaveProperty("comment_count", "11");
+  });
+  it("should work when getting an article with no comments", async () => {
+    const { body } = await request(app).get("/api/articles/2").expect(200);
+    expect(body.article[0]).toHaveProperty("comment_count", "0");
+  });
+});
