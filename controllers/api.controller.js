@@ -69,8 +69,12 @@ async function postCommentToArticle(req, res, next) {
 }
 
 async function getUsers(req, res, next) {
-  const users = await selectUsers();
-  res.status(200).send({ users });
+  try {
+    const users = await selectUsers();
+    res.status(200).send({ users });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function getUpdatedArticle(req, res, next) {
