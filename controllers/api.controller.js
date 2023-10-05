@@ -80,7 +80,7 @@ async function getDeleteComment(req, res, next) {
   try {
     const { comment_id } = req.params;
     const comment = await deleteComment(comment_id);
-    res.status(204).send(comment);
+    res.status(204).send();
   } catch (err) {
     next(err);
   }

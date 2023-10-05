@@ -232,22 +232,10 @@ describe("POST to /api/articles/:article_id/comments", () => {
 describe("PATCH to /api/articles/:article_id", () => {
   it("should respond with status code 200 for a successful request and respond with the updated article", async () => {
     const input = { inc_votes: 1 };
-    const articleBefore = {
-      article_id: 1,
-      title: "Living in the shadow of a great man",
-      topic: "mitch",
-      author: "butter_bridge",
-      body: "I find this existence challenging",
-      created_at: "2020-07-09T20:11:00.000Z",
-      votes: 100,
-      article_img_url:
-        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    }; // this is the article that we will be checking in this test
     const { body } = await request(app)
       .patch("/api/articles/1")
       .send(input)
       .expect(200);
-    expect(body).not.toEqual(articleBefore);
     expect(body).toEqual({
       article_id: 1,
       title: "Living in the shadow of a great man",
@@ -262,22 +250,11 @@ describe("PATCH to /api/articles/:article_id", () => {
   });
   it("should return with an updated article for a number greater that 1", async () => {
     const input = { inc_votes: 10 };
-    const articleBefore = {
-      article_id: 1,
-      title: "Living in the shadow of a great man",
-      topic: "mitch",
-      author: "butter_bridge",
-      body: "I find this existence challenging",
-      created_at: "2020-07-09T20:11:00.000Z",
-      votes: 100,
-      article_img_url:
-        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    }; // this is the article that we will be checking in this test
+
     const { body } = await request(app)
       .patch("/api/articles/1")
       .send(input)
       .expect(200);
-    expect(body).not.toEqual(articleBefore);
     expect(body).toEqual({
       article_id: 1,
       title: "Living in the shadow of a great man",
@@ -319,7 +296,7 @@ describe("PATCH to /api/articles/:article_id", () => {
 describe("DELETE to /api/comments/:comment_id", () => {
   it("should delete a given comment by the comment id, respond with status 204 and no content", async () => {
     const { body } = await request(app).delete("/api/comments/1").expect(204);
-    expect(body).toEqual({});
+    expect(body).toBeEmpty();
   });
   it("should return an error if the comment id is invalid", async () => {
     const { body } = await request(app)
@@ -334,9 +311,9 @@ describe("DELETE to /api/comments/:comment_id", () => {
     expect(body.message).toBe("Bad Request");
   });
   it("should delete that comment belonging to the id and it should no longer be in the database", async () => {
-    const deletion = await request(app).delete("/api/comments/1"); //should delete the comments with the comment id of 1
-    const { body } = await request(app).get("/api/articles/9/comments"); //this article has a comment with comment id of 1
-    expect(body.comments.length).toBe(1); //length of this is 2 originally
+    const deletion = await request(app).delete("/api/comments/1");
+    const { body } = await request(app).get("/api/articles/9/comments");
+    expect(body.comments.length).toBe(1);
   });
 });
 
