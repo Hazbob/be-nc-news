@@ -4,6 +4,7 @@ const {
   getAllArticles,
   getCommentsOfArticle,
   postCommentToArticle,
+  getUsers,
   getUpdatedArticle,
   getDeleteComment,
 } = require("./controllers/api.controller.js");
@@ -26,6 +27,9 @@ app.get("/api/articles", getAllArticles);
 
 app.get("/api/articles/:article_id/comments", getCommentsOfArticle);
 app.post("/api/articles/:article_id/comments", postCommentToArticle);
+
+
+app.get("/api/users", getUsers);
 
 app.patch("/api/articles/:article_id", getUpdatedArticle);
 

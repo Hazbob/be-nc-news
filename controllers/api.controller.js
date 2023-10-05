@@ -4,6 +4,7 @@ const {
   selectAllArticles,
   selectCommentsOfArticle,
   insertCommentOnArticle,
+  selectUsers,
   updateArticle,
   deleteComment,
 } = require("../model/model");
@@ -66,6 +67,13 @@ async function postCommentToArticle(req, res, next) {
   }
 }
 
+
+async function getUsers(req, res, next) {
+  const users = await selectUsers();
+  res.status(200).send({ users });
+}
+
+
 async function getUpdatedArticle(req, res, next) {
   try {
     const { article_id } = req.params;
@@ -85,12 +93,14 @@ async function getDeleteComment(req, res, next) {
     next(err);
   }
 }
+
 module.exports = {
   getTopics,
   getArticle,
   getAllArticles,
   getCommentsOfArticle,
   postCommentToArticle,
+  getUsers,
   getUpdatedArticle,
   getDeleteComment,
 };

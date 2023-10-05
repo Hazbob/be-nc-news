@@ -317,4 +317,16 @@ describe("DELETE to /api/comments/:comment_id", () => {
   });
 });
 
-describe("GET /api/users", () => {});
+describe("GET api/users", () => {
+  it("should return a status code of 200 and return an array of user objects", async () => {
+    const { body } = await request(app).get("/api/users").expect(200);
+    expect(body.users.length).toBe(4);
+    body.users.forEach((user) => {
+      expect(user).toMatchObject({
+        username: expect.any(String),
+        name: expect.any(String),
+        avatar_url: expect.any(String),
+      });
+    });
+  });
+});

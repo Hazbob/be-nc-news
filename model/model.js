@@ -60,6 +60,13 @@ async function insertCommentOnArticle(articleId, author, body) {
   return query.rows[0];
 }
 
+
+async function selectUsers() {
+  const users = await db.query(`
+  SELECT * FROM users;
+  `);
+  return users.rows;
+}
 async function updateArticle(votesNum, articleId) {
   if (!votesNum || !articleId) {
     return Promise.reject({ status: 400, message: "Bad Request" });
@@ -93,6 +100,7 @@ async function deleteComment(...commentId) {
     return Promise.reject({ status: 404, message: "comment does not exist" });
   }
   return comment;
+
 }
 
 module.exports = {
@@ -101,6 +109,8 @@ module.exports = {
   selectAllArticles,
   selectCommentsOfArticle,
   insertCommentOnArticle,
+  selectUsers,
   updateArticle,
   deleteComment,
+
 };
