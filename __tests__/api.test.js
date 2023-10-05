@@ -330,3 +330,36 @@ describe("GET api/users", () => {
     });
   });
 });
+
+describe("GET /api/articles with topic query", () => {
+  it("should return an array of article with only the topic specified in the path", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200);
+    body.articles.forEach((article) => {
+      expect(article).toMatchObject({
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: expect.any(Number),
+        topic: "mitch",
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+        article_img_url: expect.any(String),
+        comment_count: expect.any(String),
+      });
+    });
+  });
+
+  it("should return an error if an invalid topic was input", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?topic=notaasdawedawdasdawdadtopic")
+      .expect(400);
+    expect(body.message).toBe("Invalid Topic");
+  });
+  it("should return a 200 if the topic exists but there is no article and return an empty array in the body", async () => {
+    const { body } = await request(app)
+      .get("/api/articles?topic=testtopicwithnoarticle")
+      .expect(200);
+    expect(body.articles).toEqual([]);
+  });
+});

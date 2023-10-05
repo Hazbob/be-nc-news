@@ -31,7 +31,8 @@ async function getArticle(req, res, next) {
 
 async function getAllArticles(req, res, next) {
   try {
-    const articles = await selectAllArticles();
+    const { topic } = req.query;
+    const articles = await selectAllArticles(topic);
     res.status(200).send({ articles });
   } catch (err) {
     next(err);
@@ -67,12 +68,10 @@ async function postCommentToArticle(req, res, next) {
   }
 }
 
-
 async function getUsers(req, res, next) {
   const users = await selectUsers();
   res.status(200).send({ users });
 }
-
 
 async function getUpdatedArticle(req, res, next) {
   try {
