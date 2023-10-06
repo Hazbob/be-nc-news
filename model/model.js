@@ -125,6 +125,22 @@ async function deleteComment(...commentId) {
   return comment;
 }
 
+async function selectUser(username) {
+  const userArray = [username];
+
+  const user = await db.query(
+    `
+  SELECT * FROM users
+  WHERE username = $1;`,
+    userArray
+  );
+
+  if (user.rows.length === 0) {
+    return Promise.reject({ status: 404, message: "User Not Found" });
+  }
+
+  return user.rows[0];
+}
 module.exports = {
   selectTopics,
   selectArticle,
@@ -134,4 +150,5 @@ module.exports = {
   selectUsers,
   updateArticle,
   deleteComment,
+  selectUser,
 };

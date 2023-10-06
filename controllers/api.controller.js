@@ -7,6 +7,7 @@ const {
   selectUsers,
   updateArticle,
   deleteComment,
+  selectUser,
 } = require("../model/model");
 
 async function getTopics(req, res, next) {
@@ -98,6 +99,16 @@ async function getDeleteComment(req, res, next) {
   }
 }
 
+async function getUser(req, res, next) {
+  try {
+    const { username } = req.params;
+    const user = await selectUser(username);
+    res.status(200).send(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getTopics,
   getArticle,
@@ -107,4 +118,5 @@ module.exports = {
   getUsers,
   getUpdatedArticle,
   getDeleteComment,
+  getUser,
 };

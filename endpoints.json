@@ -122,5 +122,16 @@
         }
       ]
     }
+  },
+  "GET /api/users/:username": {
+    "description": "serve a user object relating to username passed as param",
+    "queries": [],
+    "exampleResponse": {
+      "users": {
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      }
+    }
   }
 }

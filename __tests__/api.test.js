@@ -413,3 +413,21 @@ describe("GET api/articles/ with sortby query", () => {
     });
   });
 });
+
+describe("GET users by username", () => {
+  it("should return an object with all of the correct properties, a status code of 200 and the username lurker", async () => {
+    const { body } = await request(app).get("/api/users/lurker").expect(200);
+    expect(body).toMatchObject({
+      username: "lurker",
+      name: "do_nothing",
+      avatar_url:
+        "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+    });
+  });
+  it("should return an error if an invalid username is input", async () => {
+    const { body } = await request(app)
+      .get("/api/users/129371027310397")
+      .expect(404);
+    expect(body.message).toBe("User Not Found");
+  });
+});
