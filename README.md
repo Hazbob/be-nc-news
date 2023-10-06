@@ -21,3 +21,7 @@ description of the endpoint
 acceptable query options
 format of request body for POST/PUT/PATCH
 examples of responses
+
+Minimum versions:
+node: v20.5.1
+Postgres: v15.0
