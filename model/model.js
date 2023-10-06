@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { sort } = require("../db/data/test-data/users");
 
 async function selectTopics() {
   const topicData = db.query(`SELECT * FROM topics;`);
@@ -23,10 +24,15 @@ async function selectArticle(articleId) {
   return articleData.rows;
 }
 
-async function selectAllArticles(topic) {
+async function selectAllArticles(topic, sort_by = "DESC") {
+  sort_by.toUpperCase();
   const validTopics = {
     mitch: "mitch",
     testtopicwithnoarticle: "testtopicwithnoarticle",
+  };
+  const valiidSorts = {
+    ASC: "ASC",
+    DESC: "DESC",
   };
 
   let query = `
@@ -40,9 +46,12 @@ async function selectAllArticles(topic) {
     }
     query += ` WHERE articles.topic = '${validTopics[topic]}'`;
   }
-
+  if (!(sort_by in valiidSorts)) {
+    sort_by = "DESC";
+  }
   query += ` GROUP BY articles.article_id
-  ORDER BY articles.created_at DESC;`;
+    ORDER BY articles.created_at ${valiidSorts[sort_by]};`;
+
   const articles = await db.query(query);
   return articles.rows;
 }

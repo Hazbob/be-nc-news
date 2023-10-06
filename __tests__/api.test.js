@@ -374,3 +374,42 @@ describe("GET article by id should have a comment count property too", () => {
     expect(body.article[0]).toHaveProperty("comment_count", "0");
   });
 });
+
+describe("GET api/articles/ with sortby query", () => {
+  it("should return a status code of 200 and an array of articles sorted by create_at in ascending order", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/?sort_by=ASC")
+      .expect(200);
+    expect(body.articles).toBeSorted({
+      key: "created_at",
+      descending: false,
+    });
+  });
+  it("should return a status code of 200 and an array of articles sorted by create_at in descending order", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/?sort_by=DESC")
+      .expect(200);
+    expect(body.articles).toBeSorted({
+      key: "created_at",
+      descending: true,
+    });
+  });
+  it("if invalid sort order, instead of throwing error we will return them in the default order", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/?sort_by=adadadad")
+      .expect(200);
+    expect(body.articles).toBeSorted({
+      key: "created_at",
+      descending: true,
+    });
+  });
+  it("if invalid input on the query id it should still return the array of articles in descending order", async () => {
+    const { body } = await request(app)
+      .get("/api/articles/?spellingmistake_by=ASC")
+      .expect(200);
+    expect(body.articles).toBeSorted({
+      key: "created_at",
+      descending: true,
+    });
+  });
+});
