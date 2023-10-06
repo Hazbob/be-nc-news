@@ -10,91 +10,117 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all articles",
+    "description": "serves an array of all topics",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
         {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
           "author": "weegembump",
-          "body": "Text from the article..",
+          "title": "Seafood substitutions are increasing",
+          "article_id": 0,
+          "topic": "cooking",
           "created_at": "2018-05-30T15:59:13.341Z",
           "votes": 0,
+          "article_img_url": "https://XXXXX.XXXX/",
           "comment_count": 6
         }
       ]
     }
   },
   "GET /api/articles/:article_id": {
-    "description": "serves a single article belonging to the id input into url",
+    "description": "serves an article object with provided article_id.",
     "queries": [],
     "exampleResponse": {
-      "article": [
+      "articles": {
+        "author": "weegembump",
+        "title": "Seafood substitutions are increasing",
+        "article_id": 0,
+        "body": "Text from the article..",
+        "topic": "cooking",
+        "created_at": "2018-05-30T15:59:13.341Z",
+        "votes": 0,
+        "article_img_url": "https://XXXXX.XXXX/"
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "update the value of votes property of the article with the given article_id.",
+    "queries": [],
+    "exampleResponse": {
+      "articles": [
         {
-          "title": "Living in the shadow of a great man",
-          "topic": "mitch",
-          "author": "butter_bridge",
-          "body": "I find this existence challenging",
-          "created_at": 1594329060000,
-          "votes": 100,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+          "author": "weegembump",
+          "title": "Seafood substitutions are increasing",
+          "article_id": 0,
+          "topic": "cooking",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 10,
+          "article_img_url": "https://XXXXX.XXXX/",
+          "comment_count": 6
         }
       ]
     }
   },
   "GET /api/articles/:article_id/comments": {
-    "description": "serves all comments belonging to a specific article id, sorted from most recent comment first",
+    "description": "serves an array of comments for the given article_id.",
     "queries": [],
     "exampleResponse": {
       "comments": [
         {
-          "body": "I am 100% sure that we're not completely sure.",
-          "votes": 1,
-          "author": "butter_bridge",
-          "article_id": 5,
-          "created_at": 1606176480000
+          "comment_id": 5,
+          "votes": 0,
+          "created_at": "2020-11-03T21:00:00.000Z",
+          "author": "icellusedkars",
+          "body": "I hate streaming noses",
+          "article_id": 1
         },
         {
-          "body": "This is a bad article name",
-          "votes": 1,
+          "comment_id": 2,
+          "votes": 14,
+          "created_at": "2020-10-31T03:03:00.000Z",
           "author": "butter_bridge",
-          "article_id": 6,
-          "created_at": 1602433380000
+          "body": "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+          "article_id": 1
         }
       ]
     }
   },
   "POST /api/articles/:article_id/comments": {
-    "description": "posts a new comment to the comments database, with an article id matching to the article the comment belongs to",
+    "description": "allows existing user to post a new comment and return the new comment.",
+    "formatOfPosting": { "username": "XXX", "body": "AAA" },
     "queries": [],
-    "exampleInput": { "username": "butter_bridge", "body": "article body" },
     "exampleResponse": {
-      "body": "article body",
-      "votes": 1,
-      "author": "butter_bridge",
-      "article_id": 6,
-      "created_at": 1602433380000
-    }
-  },
-  "PATCH /api/articles/:article_id": {
-    "description": "updates an article by its article id. takes an object which specifies amount of votes to be incremented by",
-    "queries": [],
-    "exampleInput": { "inc_votes": 1 },
-    "exampleResponse": {
-      "article_id": 1,
-      "title": "Living in the shadow of a great man",
-      "topic": "mitch",
-      "author": "butter_bridge",
-      "body": "I find this existence challenging",
-      "created_at": "2020-07-09T20:11:00.000Z",
-      "votes": 101,
-      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      "comments": {
+        "comment_id": 2,
+        "votes": 0,
+        "created_at": "2020-10-31T03:03:00.000Z",
+        "author": "XXX",
+        "body": "AAA",
+        "article_id": 1
+      }
     }
   },
   "DELETE /api/comments/:comment_id": {
-    "description": "deletes comments belonging to that id that is passed into the path",
+    "description": "delete the comment of the given comment_id from the database.",
     "queries": [],
     "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "serve an array of objects which should have 'username', 'name' and 'avatar_url' properties.",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "butter_bridge",
+          "name": "jonny",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        },
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        }
+      ]
+    }
   }
 }
