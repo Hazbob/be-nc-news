@@ -31,8 +31,9 @@ async function getArticle(req, res, next) {
 
 async function getAllArticles(req, res, next) {
   try {
-    const { topic } = req.query;
-    const articles = await selectAllArticles(topic);
+    const { topic, sort_by } = req.query;
+    console.log(sort_by);
+    const articles = await selectAllArticles(topic, sort_by);
     res.status(200).send({ articles });
   } catch (err) {
     next(err);
