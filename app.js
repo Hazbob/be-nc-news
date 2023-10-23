@@ -1,5 +1,7 @@
 const apiRouter = require("./routes/api-router");
 
+const cors = require("cors")
+
 const {
   getTopics,
   getArticle,
@@ -18,7 +20,9 @@ const {
 } = require("./controllers/error.controller.js");
 
 const express = require("express");
+
 const app = express();
+// app.use(cors())
 app.use(express.json());
 
 app.use("/api", apiRouter);
