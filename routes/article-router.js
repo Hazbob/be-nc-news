@@ -12,7 +12,9 @@ const {
 
 articleRouter.route("/").get(getAllArticles);
 
-articleRouter.route("/:article_id").get(getArticle).patch(getUpdatedArticle);
+articleRouter.route("/:article_id")
+    .get(getArticle)
+    .patch(getUpdatedArticle);
 
 articleRouter
   .route("/:article_id/comments")

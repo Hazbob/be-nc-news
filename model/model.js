@@ -27,8 +27,9 @@ async function selectArticle(articleId) {
 async function selectAllArticles(topic, sort_by = "DESC") {
   sort_by.toUpperCase();
   const validTopics = {
-    mitch: "mitch",
-    testtopicwithnoarticle: "testtopicwithnoarticle",
+    coding: "coding",
+    cooking: "cooking",
+    football: "football"
   };
   const valiidSorts = {
     ASC: "ASC",
