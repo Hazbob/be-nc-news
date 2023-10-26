@@ -28,9 +28,7 @@ async function selectAllArticles(topic, sort_by = "DESC") {
   if(sort_by === "DATE"){
     sort_by = "created_at"
   }
-  if(sort_by === "COMMENTS"){
-    sort_by = "COMMENT_COUNT"
-  }
+
   sort_by.toUpperCase();
   const validTopics = {
     coding: "coding",
@@ -60,10 +58,8 @@ async function selectAllArticles(topic, sort_by = "DESC") {
   if (!(sort_by in valiidSorts)) {
     sort_by = "DESC";
   }
-  if(sort_by === "COMMENTS"){
-    query += ` GROUP BY articles.article_id
-    ORDER BY articles.COMMENT_COUNT DESC;`;
-  }else if(sort_by === "DATE"){
+
+  if(sort_by === "DATE"){
     query += ` GROUP BY articles.article_id
     ORDER BY articles.created_at DESC;`;
   }else if(sort_by === "VOTES"){
