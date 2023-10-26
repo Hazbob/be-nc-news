@@ -34,6 +34,10 @@ async function selectAllArticles(topic, sort_by = "DESC") {
   const valiidSorts = {
     ASC: "ASC",
     DESC: "DESC",
+    DATE: "DATE",
+    COMMENT_COUNT: "COMMENT_COUNT",
+    VOTES: "VOTES"
+
   };
 
   let query = `
