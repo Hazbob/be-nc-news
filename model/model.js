@@ -40,6 +40,7 @@ async function selectAllArticles(topic, sort_by = "DESC") {
     DESC: "DESC",
     DATE: "DATE",
     COMMENT_COUNT: "COMMENT_COUNT",
+    COMMENTS: "COMMENT_COUNT",
     VOTES: "VOTES"
 
   };
