@@ -54,8 +54,19 @@ async function selectAllArticles(topic, sort_by = "DESC") {
   if (!(sort_by in valiidSorts)) {
     sort_by = "DESC";
   }
+  if(sort_by === "COMMENTS"){
+    query += ` GROUP BY articles.article_id
+    ORDER BY articles.COMMENT_COUNT DESC;`;
+  }else if(sort_by === "DATE"){
+    query += ` GROUP BY articles.article_id
+    ORDER BY articles.DATE DESC;`;
+  }else if(sort_by === "VOTES"){
+    query += ` GROUP BY articles.article_id
+    ORDER BY articles.VOTES DESC;`;
+  }else{
   query += ` GROUP BY articles.article_id
     ORDER BY articles.created_at ${valiidSorts[sort_by]};`;
+  }
 
   const articles = await db.query(query);
   return articles.rows;
