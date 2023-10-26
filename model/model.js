@@ -25,6 +25,9 @@ async function selectArticle(articleId) {
 }
 
 async function selectAllArticles(topic, sort_by = "DESC") {
+  if(sort_by === "DATE"){
+    sort_by = "created_at"
+  }
   sort_by.toUpperCase();
   const validTopics = {
     coding: "coding",
