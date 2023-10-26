@@ -28,6 +28,9 @@ async function selectAllArticles(topic, sort_by = "DESC") {
   if(sort_by === "DATE"){
     sort_by = "created_at"
   }
+  if(sort_by === "COMMENTS"){
+    sort_by = "COMMENT_COUNT"
+  }
   sort_by.toUpperCase();
   const validTopics = {
     coding: "coding",
