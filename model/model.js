@@ -59,7 +59,7 @@ async function selectAllArticles(topic, sort_by = "DESC") {
     ORDER BY articles.COMMENT_COUNT DESC;`;
   }else if(sort_by === "DATE"){
     query += ` GROUP BY articles.article_id
-    ORDER BY articles.DATE DESC;`;
+    ORDER BY articles.created_at DESC;`;
   }else if(sort_by === "VOTES"){
     query += ` GROUP BY articles.article_id
     ORDER BY articles.VOTES DESC;`;
