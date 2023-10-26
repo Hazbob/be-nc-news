@@ -65,7 +65,7 @@ async function selectAllArticles(topic, sort_by = "DESC") {
     ORDER BY articles.created_at DESC;`;
   }else if(sort_by === "COMMENT_COUNT"){
     query += ` GROUP BY articles.article_id
-    ORDER BY articles.comment_count DESC;`
+    ORDER BY comment_count DESC;`
 
   } else if(sort_by === "VOTES"){
     query += ` GROUP BY articles.article_id
