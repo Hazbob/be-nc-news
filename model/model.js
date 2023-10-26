@@ -55,7 +55,7 @@ async function selectAllArticles(topic, sort_by = "DESC") {
     sort_by = "DESC";
   }
   query += ` GROUP BY articles.article_id
-    ORDER BY articles.${valiidSorts[sort_by]};`;
+    ORDER BY articles.created_at ${valiidSorts[sort_by]};`;
 
   const articles = await db.query(query);
   return articles.rows;
