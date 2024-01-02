@@ -1,5 +1,4 @@
-My Northcoders News API
-Purpose
+
 This API is back-end service for the purpose of accessing application data programmatically so as to provide information to the front-end architecture. In this case it is to serve up news website data.
 
 Toolkit
